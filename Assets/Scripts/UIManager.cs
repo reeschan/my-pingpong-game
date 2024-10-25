@@ -6,22 +6,24 @@ public class UIManager : MonoBehaviour
 {
   public TextMeshProUGUI scoreText;
 
-
   public TextMeshProUGUI levelText;
 
   private void OnEnable()
   {
     GameEventManager.OnScoreUpdate += UpdateScoreText;
+    GameEventManager.OnLevelUpdate += UpdateLevelText;
   }
 
   private void OnDisable()
   {
     GameEventManager.OnScoreUpdate -= UpdateScoreText;
+    GameEventManager.OnLevelUpdate -= UpdateLevelText;
   }
 
   void Start()
   {
     UpdateScoreText(GameScoreManager.Instance.Value);
+    UpdateLevelText(GameLevelManager.Instance.Value);
   }
 
   private void UpdateScoreText(int newScore)
