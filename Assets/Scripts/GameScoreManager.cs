@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameScoreManager : GameManager<int>
 {
+    public static GameScoreManager Instance => DerivedInstance<GameScoreManager>();
+
     protected override void Awake()
     {
         base.Awake();

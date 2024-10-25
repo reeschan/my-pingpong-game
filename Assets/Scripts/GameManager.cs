@@ -10,7 +10,13 @@ public interface IGameManager<T> where T : struct
 
 public abstract class GameManager<T> : MonoBehaviour, IGameManager<T> where T : struct
 {
-    public static GameManager<T> Instance { get; private set; }
+    private static GameManager<T> Instance { get; set; }
+
+    // 型指定された派生インスタンス
+    protected static TDerived DerivedInstance<TDerived>() where TDerived : GameManager<T>
+    {
+        return Instance as TDerived;
+    }
 
     public T Value { get; private set; }
 
@@ -43,17 +49,15 @@ public abstract class GameManager<T> : MonoBehaviour, IGameManager<T> where T : 
 
     public void Add(T value)
     {
-        if (typeof(T) == typeof(int))
+        try
         {
-            Value = (T)(object)((int)(object)Value + (int)(object)value);
+            dynamic currentValue = Value;
+            dynamic addedValue = value;
+            Value = (T)(currentValue + addedValue);
         }
-        else if (typeof(T) == typeof(float))
+        catch (Exception ex)
         {
-            Value = (T)(object)((float)(object)Value + (float)(object)value);
-        }
-        else
-        {
-            Debug.LogWarning("Unsupported type for Add<T>: " + typeof(T));
+            Debug.LogWarning($"Unsupported type for Add<T>: {typeof(T)} - {ex.Message}");
             return;
         }
 
