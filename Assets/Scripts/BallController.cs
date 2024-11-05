@@ -86,13 +86,17 @@ public class BallController : MonoBehaviour
 
             // 新しい速度を適用
             rb.velocity = newVelocity.normalized * speed;
+            EffectManager.Instance.PlayEffect(Effect.WallCollision, 0.2f);
         }
         else if (collision.gameObject.tag == TagHelper.GetTagName(Tag.GameOverZone))
         {
             OnGameOver?.Invoke();
         }
+        else if (collision.gameObject.tag == TagHelper.GetTagName(Tag.Enemy))
+        {
+            EffectManager.Instance.PlayEffect(Effect.DestroyEnemy);
+        }
     }
-
 
     public void ResetBallPosition()
     {
